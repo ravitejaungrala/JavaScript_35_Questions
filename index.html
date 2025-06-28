@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Code Playground</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* Previous CSS styles remain the same */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #1abc9c;
+            --sidebar-bg: #2c3e50;
+            --sidebar-text: white;
+            --main-bg: #f5f7fa;
+            --code-bg: #f8f9fa;
+            --output-bg: #2c3e50;
+            --output-text: white;
+            --mobile-nav-height: 60px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--main-bg);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Desktop Layout */
+        .desktop-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        /* Mobile Layout */
+        .mobile-nav {
+            display: none;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: var(--mobile-nav-height);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .mobile-nav-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .mobile-nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .mobile-nav-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .sidebar-mobile {
+            position: fixed;
+            top: var(--mobile-nav-height);
+            left: 0;
+            bottom: 0;
+            width: 80%;
+            max-width: 300px;
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            overflow-y: auto;
+            padding: 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 999;
+        }
+
+        .sidebar-mobile.open {
+            transform: translateX(0);
+        }
+
+        .overlay {
+            position: fixed;
+            top: var(--mobile-nav-height);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 998;
+            display: none;
+        }
+
+        .overlay.open {
+            display: block;
+        }
+
+        /* Common Elements */
+        .question-item {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background-color: #34495e;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .question-item:hover {
+            background-color: #3d566e;
+            transform: translateX(5px);
+        }
+
+        .question-item.active {
+            background-color: var(--secondary-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .code-container {
+            background-color: var(--code-bg);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .output-container {
+            background-color: var(--output-bg);
+            color: var(--output-text);
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 10px;
+            display: none;
+            overflow-x: auto;
+        }
+
+        .toggle-output {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-output:hover {
+            background-color: #16a085;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #34495e;
+            color: white;
+        }
+
+        .search-box::placeholder {
+            color: #bdc3c7;
+        }
+
+        .no-results {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .download-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .download-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Image Upload Styles */
+        .image-upload-container {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .image-upload-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .image-upload-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .uploaded-image {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 15px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .remove-image-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 0.8rem;
+        }
+
+        .remove-image-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .desktop-container {
+                display: block;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .mobile-nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .main-content {
+                padding: 20px;
+                margin-top: var(--mobile-nav-height);
+                height: calc(100vh - var(--mobile-nav-height));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Navbar -->
+    <nav class="mobile-nav">
+        <div class="mobile-nav-title">JS Code Playground</div>
+        <div class="mobile-nav-buttons">
+            <button class="mobile-nav-btn" id="menuBtn">☰</button>
+            <button class="mobile-nav-btn" id="downloadBtnMobile">↓</button>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Mobile Sidebar -->
+    <div class="sidebar-mobile" id="sidebarMobile">
+        <h2>JavaScript Questions</h2>
+        <input type="text" class="search-box" placeholder="Search questions..." id="searchBoxMobile">
+        <div id="questionsListMobile"></div>
+    </div>
+
+    <!-- Desktop Layout -->
+    <div class="desktop-container">
+        <div class="sidebar">
+            <h2>JavaScript Questions</h2>
+            <input type="text" class="search-box" placeholder="Search questions..." id="searchBox">
+            <div id="questionsList"></div>
+        </div>
+        
+        <div class="main-content">
+            <h1 id="currentQuestionTitle">Select a question from the sidebar</h1>
+            <div class="code-container" id="codeDisplay">
+                <p>Code will appear here when you select a question.</p>
+            </div>
+            
+            <!-- Image Upload Section (will be shown only for questions 8-15) -->
+            <div class="image-upload-container" id="imageUploadContainer" style="display: none;">
+                <h3>Upload Code Image</h3>
+                <input type="file" id="imageUpload" accept="image/*">
+                <button class="image-upload-btn" id="uploadBtn">Upload Image</button>
+                <button class="remove-image-btn" id="removeImageBtn" style="display: none;">Remove Image</button>
+                <div id="imagePreview"></div>
+            </div>
+            
+            <button class="download-btn" id="downloadPdfBtn">Download as PDF</button>
+            <button class="toggle-output" id="toggleOutputBtn" style="display: none;">Show Output</button>
+            <div class="output-container" id="outputDisplay"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize jsPDF
+        const { jsPDF } = window.jspdf;
+        
+        // Questions data
+        const questions = [
+            // Questions 1-7 remain the same as before
+          {
+                id: 1,
+                title: "Difference between biggest and smallest number in an array",
+                code: `let ab=[12,13,15,17,19,11]
+let max= ab.reduce((a,b)=>a>b ? a:b);
+let min=ab.reduce((a,b)=>a<b ? a:b);
+let difference= max-min;
+console.log(max);
+console.log(min);
+console.log(difference)`,
+                output: `19\n11\n8`
+            },
+            {
+                id: 2,
+                title: "Find the average of elements in an array of numbers",
+                code: `let numbers = [10, 20, 30, 40, 50];
+let sum = 0;
+
+numbers.forEach(num=>{
+sum+=num;}
+);
+console.log(sum)
+let avg= sum/numbers.length;
+console.log(avg)`,
+                output: `150\n30\n
+
+=== Code Execution Successful ===`
+            },
+            {
+                id: 3,
+                title: "Sum of even numbers from given array",
+                code: `let numbers = [10, 20, 30, 45, 50];
+let sum = 0;
+
+numbers.forEach(num=>{
+    if(num%2==0){
+        
+   
+sum+=num;}
+}
+);
+console.log(sum)
+`,
+                output: `110
+
+=== Code Execution Successful ===`
+            },
+            {
+                id: 4,
+                title: "Count number of duplicates elements of an array",
+                code: `let arr = [1, 2, 3, 2, 4, 1, 5, 3];
+
+let duplicates = arr.filter((item, index) => arr.indexOf(item) !== index);
+    console.log(duplicates.length)
+
+`,
+                output: `3
+
+=== Code Execution Successful ===`
+            },
+            {
+                id: 5,
+                title: "Create array of even numbers from give array",
+                code: `let numbers = [10, 20, 30, 45, 50];
+
+
+let number=numbers.filter(num=>
+    (num%2==0))
+        
+   
+
+
+console.log(number)
+`,
+                output: `[ 10, 20, 30, 50 ]
+
+=== Code Execution Successful ===`
+            },
+            {
+                id: 6,
+                title: "Print running time",
+                code: `const start = Date.now()
+console.log(start)
+for(i=0;i<1e6;i++)
+{
+    
+}
+const end=Date.now()
+console.log(end)
+let finish=end-start;
+console.log(finish+"  milliseconds")`,
+                output: `1751076790244\n
+1751076790251\n
+7 milliseconds\n
+
+=== Code Execution Successful ===`
+            },
+            {
+                id: 7,
+                title: "Student details who got highest marks (using class)",
+                code: `
+class Student {
+  constructor(name, rollNo, marks) {
+    this.name = name;
+    this.rollNo = rollNo;
+    this.marks = marks;
+  }
+}
+
+
+let students = [
+  new Student("Ravi", 101, 87),
+  new Student("Teja", 102, 92),
+  new Student("Charan", 103, 78),
+  new Student("Lokesh", 104, 95),
+  new Student("Mukesh", 105, 88)
+];
+
+let topStudent = students[0];
+students.forEach(students=>{
+if(students.marks>topStudent.marks){
+topStudent=students}});
+
+console.log("Student with Highest Marks:");
+console.log("Name:", topStudent.name);
+console.log("Roll No:", topStudent.rollNo);
+console.log("Marks:", topStudent.marks);
+`,
+                output: `Student with Highest Marks:\n
+Name: Lokesh\n
+Roll No: 104\n
+Marks: 95\n
+
+=== Code Execution Successful ===`
+            },
+            {
+                id: 8,
+                title: "Add colors to all h1 tags when button is clicked",
+                code: `This question requires an image upload. Please upload an image of your code.`,
+                output: `This is Heading 1 \n
+This is Another Heading \n
+Change H1 Colors.`,
+                requiresImage: true
+            },
+             {
+                id: 9,
+                title: "Add isAdult property to student objects write a JavaScript program to check given number is palindrome number or not",
+                code: `function isPalindromeName(name) {
+  
+  let str = name.toString()
+
+
+  let reversed = str.split('').reverse().join('');
+
+ 
+  return str === reversed;
+}
+
+
+let name = 121;
+
+if (isPalindromeName(name)) {
+  console.log(name + " is a palindrome.");
+} else {
+  console.log(name + " is not a palindrome.");
+}
+`,
+                output: `121 is a palindrome. \n
+
+=== Code Execution Successful ===`
+            },
+
+            {
+                id: 10,
+                title: " write a JavaScript program to check given string is palindrome or not ",
+                code: `function isPalindromeName(name) {
+  
+  let str = name.toLowerCase();
+
+
+  let reversed = str.split('').reverse().join('');
+
+ 
+  return str === reversed;
+}
+
+
+let name = "Markram"
+
+if (isPalindromeName(name)) {
+  console.log(name + " is a palindrome.");
+} else {
+  console.log(name + " is not a palindrome.");
+}
+`,
+                output: `Markram is a palindrome \n
+
+=== Code Execution Successful ===`
+            },
+
+            {
+                id: 11,
+                title: " Write a JavaScript program to remove duplicate elements from an array.",
+                code: `let arr = [1, 2, 3, 2, 4, 1, 5, 3];
+
+let duplicates = arr.filter((item, index) => arr.indexOf(item) === index);
+    console.log(duplicates)
+
+`,
+                output: `[ 1, 2, 3, 4, 5 ]
+
+=== Code Execution Successful ===`
+            },
+            {
+                id: 12,
+                title: "Print incremental value when button is clicked",
+                code: `This question requires an image upload. Please upload an image of your code.`,
+                output: `Counter: 4 \n
+Click Me`,
+                requiresImage: true
+            },
+            {
+                id: 13,
+                title: "Print prime numbers between 1 to 100",
+                code: `This question requires an image upload. Please upload an image of your code.`,
+                output: `Output will be displayed after code execution.`,
+                requiresImage: true
+            },
+            {
+                id: 14,
+                title: "Find the second largest element in an array",
+                code: `This question requires an image upload. Please upload an image of your code.`,
+                output: `Output will be displayed after code execution.`,
+                requiresImage: true
+            },
+            {
+                id: 15,
+                title: "Check if given number is strong number",
+                code: `This question requires an image upload. Please upload an image of your code.`,
+                output: `Output will be displayed after code execution.`,
+                requiresImage: true
+            },
+            // Questions 16-35 remain the same as before
+        ];
+
+        const questionsList = document.getElementById('questionsList');
+        const questionsListMobile = document.getElementById('questionsListMobile');
+        const currentQuestionTitle = document.getElementById('currentQuestionTitle');
+        const codeDisplay = document.getElementById('codeDisplay');
+        const outputDisplay = document.getElementById('outputDisplay');
+        const toggleOutputBtn = document.getElementById('toggleOutputBtn');
+        const searchBox = document.getElementById('searchBox');
+        const searchBoxMobile = document.getElementById('searchBoxMobile');
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebarMobile = document.getElementById('sidebarMobile');
+        const overlay = document.getElementById('overlay');
+        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+        const downloadBtnMobile = document.getElementById('downloadBtnMobile');
+        const imageUploadContainer = document.getElementById('imageUploadContainer');
+        const imageUpload = document.getElementById('imageUpload');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const removeImageBtn = document.getElementById('removeImageBtn');
+        const imagePreview = document.getElementById('imagePreview');
+
+        // Load uploaded images from localStorage
+        let uploadedImages = JSON.parse(localStorage.getItem('uploadedImages')) || {};
+
+        // Initialize the app
+        function init() {
+            renderQuestions(questions, questionsList);
+            renderQuestions(questions, questionsListMobile);
+            
+            // Add event listeners
+            toggleOutputBtn.addEventListener('click', toggleOutput);
+            searchBox.addEventListener('input', () => handleSearch(searchBox, questionsList));
+            searchBoxMobile.addEventListener('input', () => handleSearch(searchBoxMobile, questionsListMobile));
+            
+            // Mobile event listeners
+            menuBtn.addEventListener('click', toggleMobileMenu);
+            overlay.addEventListener('click', toggleMobileMenu);
+            
+            // PDF download listeners
+            downloadPdfBtn.addEventListener('click', downloadAsPdf);
+            downloadBtnMobile.addEventListener('click', downloadAsPdf);
+            
+            // Image upload listener
+            uploadBtn.addEventListener('click', handleImageUpload);
+            removeImageBtn.addEventListener('click', removeImage);
+            
+            // Load any previously uploaded images
+            loadStoredImages();
+        }
+
+        // Render questions list
+        function renderQuestions(questionsToRender, container) {
+            container.innerHTML = '';
+            
+            if (questionsToRender.length === 0) {
+                container.innerHTML = '<div class="no-results">No questions found</div>';
+                return;
+            }
+            
+            questionsToRender.forEach(question => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.textContent = `${question.id}. ${question.title}`;
+                questionItem.addEventListener('click', () => {
+                    showQuestion(question);
+                    if (window.innerWidth <= 768) {
+                        toggleMobileMenu();
+                    }
+                });
+                container.appendChild(questionItem);
+            });
+        }
+
+        // Show selected question
+        function showQuestion(question) {
+            // Update active question in both sidebars
+            document.querySelectorAll('.question-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.textContent === `${question.id}. ${question.title}`) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Update main content
+            currentQuestionTitle.textContent = `${question.id}. ${question.title}`;
+            codeDisplay.textContent = question.code;
+            outputDisplay.textContent = question.output;
+            outputDisplay.style.display = 'none';
+            toggleOutputBtn.style.display = 'block';
+            toggleOutputBtn.textContent = 'Show Output';
+            
+            // Show/hide image upload container based on question
+            if (question.requiresImage) {
+                imageUploadContainer.style.display = 'block';
+                // Show uploaded image if exists
+                if (uploadedImages[question.id]) {
+                    showUploadedImage(question.id);
+                    removeImageBtn.style.display = 'inline-block';
+                } else {
+                    imagePreview.innerHTML = '';
+                    removeImageBtn.style.display = 'none';
+                }
+            } else {
+                imageUploadContainer.style.display = 'none';
+                imagePreview.innerHTML = '';
+                removeImageBtn.style.display = 'none';
+            }
+        }
+
+        // Toggle output visibility
+        function toggleOutput() {
+            if (outputDisplay.style.display === 'none') {
+                outputDisplay.style.display = 'block';
+                toggleOutputBtn.textContent = 'Hide Output';
+            } else {
+                outputDisplay.style.display = 'none';
+                toggleOutputBtn.textContent = 'Show Output';
+            }
+        }
+
+        // Handle search
+        function handleSearch(searchInput, container) {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredQuestions = questions.filter(question => 
+                question.title.toLowerCase().includes(searchTerm) || 
+                question.id.toString().includes(searchTerm)
+            );
+            renderQuestions(filteredQuestions, container);
+        }
+
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            sidebarMobile.classList.toggle('open');
+            overlay.classList.toggle('open');
+            document.body.classList.toggle('no-scroll');
+        }
+
+        // Handle image upload
+        function handleImageUpload() {
+            const file = imageUpload.files[0];
+            if (!file) {
+                alert('Please select an image file first.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const currentQuestionId = parseInt(currentQuestionTitle.textContent.split('.')[0]);
+                uploadedImages[currentQuestionId] = e.target.result;
+                
+                // Save to localStorage
+                localStorage.setItem('uploadedImages', JSON.stringify(uploadedImages));
+                
+                showUploadedImage(currentQuestionId);
+                removeImageBtn.style.display = 'inline-block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Remove image
+        function removeImage() {
+            const currentQuestionId = parseInt(currentQuestionTitle.textContent.split('.')[0]);
+            
+            if (uploadedImages[currentQuestionId]) {
+                delete uploadedImages[currentQuestionId];
+                
+                // Update localStorage
+                localStorage.setItem('uploadedImages', JSON.stringify(uploadedImages));
+                
+                imagePreview.innerHTML = '';
+                removeImageBtn.style.display = 'none';
+                imageUpload.value = ''; // Clear file input
+            }
+        }
+
+        // Show uploaded image
+        function showUploadedImage(questionId) {
+            if (uploadedImages[questionId]) {
+                imagePreview.innerHTML = `
+                    <img src="${uploadedImages[questionId]}" alt="Uploaded Code" class="uploaded-image">
+                `;
+            }
+        }
+
+        // Load stored images
+        function loadStoredImages() {
+            for (const questionId in uploadedImages) {
+                if (uploadedImages.hasOwnProperty(questionId)) {
+                    // Images are already loaded in the uploadedImages object
+                }
+            }
+        }
+
+        // Download as PDF
+        async function downloadAsPdf() {
+            const pdf = new jsPDF();
+            const content = document.createElement('div');
+            const currentQuestionId = parseInt(currentQuestionTitle.textContent.split('.')[0]);
+            const question = questions.find(q => q.id === currentQuestionId);
+            
+            // Create a printable version of the content
+            let htmlContent = `
+                <h1>${currentQuestionTitle.textContent}</h1>
+                <pre style="background: #f8f9fa; padding: 20px; border-radius: 5px; border: 1px solid #ddd; font-family: monospace; white-space: pre-wrap;">${codeDisplay.textContent}</pre>
+            `;
+            
+            // Add image if exists for this question
+            if (uploadedImages[currentQuestionId]) {
+                htmlContent += `
+                    <h2>Code Image:</h2>
+                    <img src="${uploadedImages[currentQuestionId]}" style="max-width: 100%; max-height: 300px; display: block; margin: 0 auto;">
+                `;
+            }
+            
+            htmlContent += `
+                <h2>Output:</h2>
+                <pre style="background: #2c3e50; color: white; padding: 15px; border-radius: 5px; font-family: monospace; white-space: pre-wrap;">${outputDisplay.textContent}</pre>
+            `;
+            
+            content.innerHTML = htmlContent;
+            document.body.appendChild(content);
+            
+            try {
+                const canvas = await html2canvas(content);
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 295; // A4 height in mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+                
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+                
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                
+                pdf.save(`${currentQuestionTitle.textContent}.pdf`);
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF. Please try again.');
+            } finally {
+                document.body.removeChild(content);
+            }
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

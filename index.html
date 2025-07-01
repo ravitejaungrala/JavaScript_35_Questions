@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* Previous CSS styles remain the same */
+      
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #1abc9c;
@@ -125,7 +125,7 @@
             display: block;
         }
 
-        /* Common Elements */
+    
         .question-item {
             padding: 12px 15px;
             margin-bottom: 10px;
@@ -245,7 +245,7 @@
             background-color: #219653;
         }
 
-        /* Image Upload Styles */
+      
         .image-upload-container {
             margin: 20px 0;
             padding: 15px;
@@ -292,7 +292,7 @@
             background-color: #c0392b;
         }
 
-        /* Responsive Styles */
+       
         @media (max-width: 768px) {
             .desktop-container {
                 display: block;
@@ -317,7 +317,7 @@
     </style>
 </head>
 <body>
-    <!-- Mobile Navbar -->
+    
     <nav class="mobile-nav">
         <div class="mobile-nav-title">JS Code 35 Question & Answers</div>
         <div class="mobile-nav-buttons">
@@ -326,17 +326,16 @@
         </div>
     </nav>
 
-    <!-- Mobile Sidebar Overlay -->
+    
     <div class="overlay" id="overlay"></div>
 
-    <!-- Mobile Sidebar -->
     <div class="sidebar-mobile" id="sidebarMobile">
         <h2>JavaScript Questions</h2>
         <input type="text" class="search-box" placeholder="Search questions..." id="searchBoxMobile">
         <div id="questionsListMobile"></div>
     </div>
 
-    <!-- Desktop Layout -->
+ 
     <div class="desktop-container">
         <div class="sidebar">
             <h2>JavaScript Questions</h2>
@@ -358,12 +357,11 @@
     </div>
 
     <script>
-        // Initialize jsPDF
+       
         const { jsPDF } = window.jspdf;
-        
-        // Questions data
+       
         const questions = [
-            // Questions 1-7 remain the same as before
+           
           {
                 id: 1,
                 title: "Difference between biggest and smallest number in an array",
@@ -632,7 +630,6 @@ for (let i=0;i<=100;i++){
             
 
 
-            // Questions 16-35 remain the same as before
            
   {
     id: 14,
@@ -964,7 +961,7 @@ const questionsList = document.getElementById('questionsList');
         const downloadBtnMobile = document.getElementById('downloadBtnMobile');
         const downloadAllBtn = document.getElementById('downloadAllBtn');
 
-        // Initialize the app
+     
         function init() {
             renderQuestions(questions, questionsList);
             renderQuestions(questions, questionsListMobile);
@@ -974,17 +971,17 @@ const questionsList = document.getElementById('questionsList');
             searchBox.addEventListener('input', () => handleSearch(searchBox, questionsList));
             searchBoxMobile.addEventListener('input', () => handleSearch(searchBoxMobile, questionsListMobile));
             
-            // Mobile event listeners
+           
             menuBtn.addEventListener('click', toggleMobileMenu);
             overlay.addEventListener('click', toggleMobileMenu);
             
-            // PDF download listeners
+           
             downloadPdfBtn.addEventListener('click', downloadAsPdf);
             downloadBtnMobile.addEventListener('click', downloadAsPdf);
             downloadAllBtn.addEventListener('click', downloadAllQuestionsAsPdf);
         }
 
-        // Render questions list
+      
         function renderQuestions(questionsToRender, container) {
             container.innerHTML = '';
             
@@ -1007,7 +1004,7 @@ const questionsList = document.getElementById('questionsList');
             });
         }
 
-        // Show selected question
+        
         function showQuestion(question) {
             // Update active question in both sidebars
             document.querySelectorAll('.question-item').forEach(item => {
@@ -1016,8 +1013,7 @@ const questionsList = document.getElementById('questionsList');
                     item.classList.add('active');
                 }
             });
-            
-            // Update main content
+           
             currentQuestionTitle.textContent = `${question.id}. ${question.title}`;
             codeDisplay.innerHTML = question.code;
             outputDisplay.textContent = question.output;
@@ -1026,7 +1022,6 @@ const questionsList = document.getElementById('questionsList');
             toggleOutputBtn.textContent = 'Show Output';
         }
 
-        // Toggle output visibility
         function toggleOutput() {
             if (outputDisplay.style.display === 'none') {
                 outputDisplay.style.display = 'block';
@@ -1037,7 +1032,6 @@ const questionsList = document.getElementById('questionsList');
             }
         }
 
-        // Handle search
         function handleSearch(searchInput, container) {
             const searchTerm = searchInput.value.toLowerCase();
             const filteredQuestions = questions.filter(question => 
@@ -1047,27 +1041,25 @@ const questionsList = document.getElementById('questionsList');
             renderQuestions(filteredQuestions, container);
         }
 
-        // Toggle mobile menu
+     
         function toggleMobileMenu() {
             sidebarMobile.classList.toggle('open');
             overlay.classList.toggle('open');
             document.body.classList.toggle('no-scroll');
         }
 
-        // Download as PDF
+      
         async function downloadAsPdf() {
             const pdf = new jsPDF();
             const content = document.createElement('div');
             const currentQuestionId = parseInt(currentQuestionTitle.textContent.split('.')[0]);
             const question = questions.find(q => q.id === currentQuestionId);
             
-            // Create a printable version of the content
             let htmlContent = `
                 <h1>${currentQuestionTitle.textContent}</h1>
                 <div style="background: #f8f9fa; padding: 20px; border-radius: 5px; border: 1px solid #ddd; font-family: monospace; white-space: pre-wrap;">${codeDisplay.textContent}</div>
             `;
-            
-            // Add image if exists in the code (for image-based questions)
+         
             if (codeDisplay.querySelector('img')) {
                 htmlContent += `
                     <h2>Code Image:</h2>
@@ -1111,12 +1103,10 @@ const questionsList = document.getElementById('questionsList');
             }
         }
 
-        // Download all questions as PDF
         async function downloadAllQuestionsAsPdf() {
             const pdf = new jsPDF();
             let position = 20; // Initial position
-            
-            // Add title page
+         
             pdf.setFontSize(24);
             pdf.text("JavaScript Code Playground - All Questions", 105, position, { align: 'center' });
             position += 30;
@@ -1130,14 +1120,13 @@ const questionsList = document.getElementById('questionsList');
                 pdf.text(`${question.id}. ${question.title}`, 20, position);
                 position += 10;
                 
-                // Add new page if needed
+       
                 if (position > 280) {
                     pdf.addPage();
                     position = 20;
                 }
             });
             
-            // Add each question
             for (const question of questions) {
                 pdf.addPage();
                 position = 20;
@@ -1150,7 +1139,6 @@ const questionsList = document.getElementById('questionsList');
                 pdf.text("Code:", 20, position);
                 position += 10;
                 
-                // Split code into multiple lines if needed
                 const codeLines = pdf.splitTextToSize(question.code.replace(/<img[^>]*>/g, '[IMAGE]'), 170);
                 pdf.text(codeLines, 25, position);
                 position += (codeLines.length * 7) + 10;
@@ -1166,7 +1154,7 @@ const questionsList = document.getElementById('questionsList');
             pdf.save("JavaScript_Code_Playground_All_Questions.pdf");
         }
 
-        // Initialize the app when DOM is loaded
+     
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>

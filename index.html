@@ -227,6 +227,24 @@
             background-color: #2980b9;
         }
 
+        .download-all-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .download-all-btn:hover {
+            background-color: #219653;
+        }
+
         /* Image Upload Styles */
         .image-upload-container {
             margin: 20px 0;
@@ -332,16 +350,8 @@
                 <p>Code will appear here when you select a question.</p>
             </div>
             
-            <!-- Image Upload Section (will be shown only for questions 8-15) -->
-            <div class="image-upload-container" id="imageUploadContainer" style="display: none;">
-                <h3>Upload Code Image</h3>
-                <input type="file" id="imageUpload" accept="image/*">
-                <button class="image-upload-btn" id="uploadBtn">Upload Image</button>
-                <button class="remove-image-btn" id="removeImageBtn" style="display: none;">Remove Image</button>
-                <div id="imagePreview"></div>
-            </div>
-            
             <button class="download-btn" id="downloadPdfBtn">Download as PDF</button>
+            <button class="download-all-btn" id="downloadAllBtn">Download All Questions</button>
             <button class="toggle-output" id="toggleOutputBtn" style="display: none;">Show Output</button>
             <div class="output-container" id="outputDisplay"></div>
         </div>
@@ -489,15 +499,12 @@ Marks: 95\n
 
 === Code Execution Successful ===`
             },
-            {
-                id: 8,
-                title: "Add colors to all h1 tags when button is clicked",
-                code: `This question requires an image upload. Please upload an image of your code.`,
-                output: `This is Heading 1 \n
-This is Another Heading \n
-Change H1 Colors.`,
-                requiresImage: true
-            },
+          {
+    id: 8,
+    title: "Add colors to all h1 tags when button is clicked",
+    code: `<img src="8.png" alt="Code for coloring h1 tags" style="max-width: 100%;">`,
+    output: `This is Heading 1 \nThis is Another Heading \nChange H1 Colors.`
+},
              {
                 id: 9,
                 title: "Add isAdult property to student objects write a JavaScript program to check given number is palindrome number or not",
@@ -578,28 +585,371 @@ Click Me`,
             {
                 id: 13,
                 title: "Print prime numbers between 1 to 100",
-                code: `This question requires an image upload. Please upload an image of your code.`,
-                output: `Output will be displayed after code execution.`,
-                requiresImage: true
-            },
-            {
-                id: 14,
-                title: "Find the second largest element in an array",
-                code: `This question requires an image upload. Please upload an image of your code.`,
-                output: `Output will be displayed after code execution.`,
-                requiresImage: true
-            },
-            {
-                id: 15,
-                title: "Check if given number is strong number",
-                code: `This question requires an image upload. Please upload an image of your code.`,
-                output: `Output will be displayed after code execution.`,
-                requiresImage: true
-            },
-            // Questions 16-35 remain the same as before
-        ];
+               
+                code: `function isPrime(number){
+    if(number<2)
+        return false;
+    for(let i=2;i<=Math.sqrt(number);i++){
+        if(number%i==0)
+            return false;
+    }
+    return true;
+}
+for (let i=0;i<=100;i++){
+    if(isPrime(i)){
+   console.log(i)
+    }
+}`,
+                output: `2
+3
+5
+7
+11
+13
+17
+19
+23
+29
+31
+37
+41
+43
+47
+53
+59
+61
+67
+71
+73
+79
+83
+89
+97
 
-        const questionsList = document.getElementById('questionsList');
+=== Code Execution Successful ===`
+            },
+            
+            
+
+
+            // Questions 16-35 remain the same as before
+           
+  {
+    id: 14,
+    title: "Find second largest element in array",
+    code: `
+let arr = [5, 9, 1, 3, 7];
+arr.sort((a, b) => b - a);
+let secondLargest = arr[1];
+console.log(secondLargest);`,
+    output: `7`
+  },
+  {
+    id: 15,
+    title: "Check strong number or not",
+   code: `<img src="15.png" alt="Code for coloring h1 tags" style="max-width: 100%;">`,
+    output: `Strong Number`
+  },
+  {
+    id: 16,
+    title: "Remove odd numbers from array",
+    code: `
+let arr = [1, 2, 3, 4, 5];
+let even = arr.filter(num => num % 2 === 0);
+console.log(even);`,
+    output: `[2, 4]`
+  },
+  {
+    id: 17,
+    title: "Count vowels in a string",
+    code: `
+function countVowels(str){
+      const vowels = ['a', 'e', 'i', 'o', 'u'];
+      const letters=str.toLowerCase().split("");
+      const vchars=letters.filter(char=>vowels.includes(char))
+      return vchars.length;
+}
+let input="he is the hero of supreme";
+  point                                  `,
+    output: ``
+  },
+  {
+    id: 18,
+    title: "Print GCD of two numbers",
+     code: `<img src="18.png" alt="Code for coloring h1 tags" style="max-width: 100%;">`,
+    output: `12`
+  },
+  {
+    id: 19,
+    title: "Check Armstrong number or not",
+    code: `<img src="19.png" alt="Code for coloring h1 tags" style="max-width: 100%;">`,
+    output: `Armstrong Number`
+  },
+  {
+    id: 20,
+    title: "Find second smallest number from array",
+    code: `
+let arr = [5, 3, 8, 1, 4];
+arr.sort((a, b) => a - b);
+console.log(arr[1]);`,
+    output: `3`
+  },
+  {
+    id: 21,
+    title: "Print N digits in Fibonacci series",
+    code: `<img src="21.png" alt="Code for coloring h1 tags" style="max-width: 100%;">`,
+    output: `0,1,1,2,3,5,8`
+  },
+  {
+    id: 22,
+    title: "Create subclasses for Student and Teacher",
+    code: `<img src="22.png" alt="Code for coloring h1 tags" style="max-width: 100%;">`,
+    output: `ravi and 25
+ravi and 75
+shiva and 45
+shiva and maths`
+  },
+  {
+    id: 23,
+    title: "Apply text color for h1 based on user input",
+    code: `<img src="23.png" alt="Code for coloring h1 tags" style="max-width: 100%;">`,
+    output: `Text color applied to h1 on button click`,
+    requiresImage: true
+
+
+  },
+  {
+    id: 24,
+    title: "Print decreasing pattern 20 to 2",
+    code: `
+let val = 20;
+for(let i = 4; i >= 1; i--){
+  let row = '';
+  for(let j = 0; j < i; j++){
+    row += val + ' ';
+    val -= 2;
+  }
+  console.log(row.trim());
+}
+  or
+  let num=20;
+let pattern=[]
+let rowCount=4;
+for (let i=rowCount;i>=1;i--){
+    let row=[];
+    for(let j=0;j<i;j++){
+        row.push(num);
+        num-=2;
+    }
+    pattern.push(row.join(" "))
+}
+console.log(pattern.join("\n"));`,
+    output: `
+20 18 16 14  
+12 10 8  
+6 4  
+2`
+  },
+  {
+    id: 25,
+    title: "Print pattern 1 to 16",
+    code: `
+let count = 1;
+for(let i = 0; i < 4; i++){
+  let row = '';
+  for(let j = 0; j < 4; j++){
+    row += count++ + ' ';
+  }
+  console.log(row.trim());
+}
+  or
+  let num=1;
+
+for (let i=0;i<4;i++){
+    let row=[];
+    for(let j=0;j<4;j++){
+        row.push(num);
+        num++;
+    }
+    console.log(row.join(" "));
+}
+`,
+    output: `
+1 2 3 4\n  
+5 6 7 8  \n
+9 10 11 12 \n 
+13 14 15 16\n`
+  },
+  {
+    id: 26,
+    title: "Create array of leap years",
+    code: `
+// let years = [1996, 2000, 2001, 2004, 1900, 2008, 2100, 2020, 2024];
+
+// let leapYears = years.filter(year => {
+//     return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+// });
+
+// console.log("Leap Years:", leapYears);
+
+let leapYears = [];
+
+for (let year = 1900; year <= 2025; year++) {
+    if ((year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)) {
+        leapYears.push(year);
+    }
+}
+
+console.log("Leap Years from 1900 to 2025:", leapYears);
+`,
+    output: `[1996, 2004, 2000]`
+  },
+  {
+    id: 27,
+    title: "Print reverse triangle pattern",
+    code: `
+for(let i = 5; i >= 1; i--){
+  let row = '';
+  for(let j = i; j >= 1; j--){
+    row += j + ' ';
+  }
+  console.log(row.trim());
+}
+  or
+  for (let i=5;i>=1;i--){
+    let row=[]
+    for(j=i;j>=1;j--){
+        row.push(j)
+
+    }
+    console.log(row.join(""))
+}`,
+    output: `
+5 4 3 2 1  
+4 3 2 1  
+3 2 1  
+2 1  
+1`
+  },
+  {
+    id: 28,
+    title: "Store factorials in new array",
+    code: `
+let array=[2,3,4,5,8,9]
+function factorial(n){
+    let fact=1;
+    for(let i=2;i<=n;i++){
+        fact*=i;
+    }
+    return fact;
+}
+let factorials=array.map(num=>factorial(num))
+
+console.log(array)
+console.log(factorials)`,
+    output: `[2, 6, 24]`
+  },
+  {
+    id: 29,
+    title: "Use promise to check even number",
+      code: `<img src="29.png" alt="Code for coloring h1 tags" style="max-width: 100%;">`,
+    output: `Even Number`
+  },
+  {
+    id: 30,
+    title: "Add n numbers using single function",
+    code: `
+function addNumbers(...nums){
+let sums=nums.reduce((acc,i)=>acc+i)
+return sums
+}
+console.log(addNumbers(12,13,14))
+console.log(addNumbers(12,13,14,9,8))
+
+console.log(addNumbers(12,13,14,7,5,6,3))
+
+`,
+    output: `39\n
+56\n
+60
+`
+  },
+  {
+    id: 31,
+    title: "Add isAdult property to student objects",
+    code: `
+let students = [
+  { name: 'John', age: 17 },
+  { name: 'Jane', age: 19 },
+  { name: 'Jack', age: 18 }
+];
+let updated = students.map(s => ({ ...s, isAdult: s.age >= 18 }));
+console.log(updated);`,
+    output: `[{"name":"John","age":17,"isAdult":false},{"name":"Jane","age":19,"isAdult":true},{"name":"Jack","age":18,"isAdult":true}]`
+  },
+//   {
+//     id: 32,
+//     title: "Find index of book by title",
+//     code: `
+// let books = [
+//   { title: 'Book A', author: 'Author 1' },
+//   { title: 'Book B', author: 'Author 2' },
+//   { title: 'Book C', author: 'Author 3' }
+// ];
+// let title = 'Book B';
+// let index = books.findIndex(book => book.title === title);
+// console.log(index);`,
+//     output: `1`
+//   },
+//   {
+//     id: 33,
+//     title: "Print employee names with salary > input",
+//     code: `
+// let employees = [
+//   { name: 'Alice', salary: 50000 },
+//   { name: 'Bob', salary: 60000 },
+//   { name: 'Charlie', salary: 40000 }
+// ];
+// let amount = 45000;
+// let names = employees
+//   .filter(e => e.salary > amount)
+//   .sort((a, b) => a.salary - b.salary)
+//   .map(e => e.name);
+// console.log(names);`,
+//     output: `["Alice", "Bob"]`
+//   },
+//   {
+//     id: 34,
+//     title: "Sort movies by release date",
+//     code: `
+// let movies = [
+//   { movieName: 'Movie A', movieHero: 'Hero A', movieGenre: 'Action', releaseDate: '2020-01-15' },
+//   { movieName: 'Movie B', movieHero: 'Hero B', movieGenre: 'Drama', releaseDate: '2019-06-10' },
+//   { movieName: 'Movie C', movieHero: 'Hero C', movieGenre: 'Comedy', releaseDate: '2021-12-25' },
+//   { movieName: 'Movie D', movieHero: 'Hero D', movieGenre: 'Horror', releaseDate: '2018-04-05' }
+// ];
+// movies.sort((a, b) => new Date(a.releaseDate) - new Date(b.releaseDate));
+// console.log(movies);`,
+//     output: `Sorted movie objects based on releaseDate`
+//   },
+//   {
+//     id: 35,
+//     title: "Return object with selected keys",
+//     code: `
+// function pick(obj, keys){
+//   return keys.reduce((res, key) => {
+//     if(obj[key] !== undefined) res[key] = obj[key];
+//     return res;
+//   }, {});
+// }
+// let obj = { a: 1, b: 2, c: 3, d: 4 };
+// let keys = ['b', 'c'];
+// console.log(pick(obj, keys));`,
+//     output: `{ b: 2, c: 3 }`
+//   }
+]
+
+const questionsList = document.getElementById('questionsList');
         const questionsListMobile = document.getElementById('questionsListMobile');
         const currentQuestionTitle = document.getElementById('currentQuestionTitle');
         const codeDisplay = document.getElementById('codeDisplay');
@@ -612,14 +962,7 @@ Click Me`,
         const overlay = document.getElementById('overlay');
         const downloadPdfBtn = document.getElementById('downloadPdfBtn');
         const downloadBtnMobile = document.getElementById('downloadBtnMobile');
-        const imageUploadContainer = document.getElementById('imageUploadContainer');
-        const imageUpload = document.getElementById('imageUpload');
-        const uploadBtn = document.getElementById('uploadBtn');
-        const removeImageBtn = document.getElementById('removeImageBtn');
-        const imagePreview = document.getElementById('imagePreview');
-
-        // Load uploaded images from localStorage
-        let uploadedImages = JSON.parse(localStorage.getItem('uploadedImages')) || {};
+        const downloadAllBtn = document.getElementById('downloadAllBtn');
 
         // Initialize the app
         function init() {
@@ -638,13 +981,7 @@ Click Me`,
             // PDF download listeners
             downloadPdfBtn.addEventListener('click', downloadAsPdf);
             downloadBtnMobile.addEventListener('click', downloadAsPdf);
-            
-            // Image upload listener
-            uploadBtn.addEventListener('click', handleImageUpload);
-            removeImageBtn.addEventListener('click', removeImage);
-            
-            // Load any previously uploaded images
-            loadStoredImages();
+            downloadAllBtn.addEventListener('click', downloadAllQuestionsAsPdf);
         }
 
         // Render questions list
@@ -682,28 +1019,11 @@ Click Me`,
             
             // Update main content
             currentQuestionTitle.textContent = `${question.id}. ${question.title}`;
-            codeDisplay.textContent = question.code;
+            codeDisplay.innerHTML = question.code;
             outputDisplay.textContent = question.output;
             outputDisplay.style.display = 'none';
             toggleOutputBtn.style.display = 'block';
             toggleOutputBtn.textContent = 'Show Output';
-            
-            // Show/hide image upload container based on question
-            if (question.requiresImage) {
-                imageUploadContainer.style.display = 'block';
-                // Show uploaded image if exists
-                if (uploadedImages[question.id]) {
-                    showUploadedImage(question.id);
-                    removeImageBtn.style.display = 'inline-block';
-                } else {
-                    imagePreview.innerHTML = '';
-                    removeImageBtn.style.display = 'none';
-                }
-            } else {
-                imageUploadContainer.style.display = 'none';
-                imagePreview.innerHTML = '';
-                removeImageBtn.style.display = 'none';
-            }
         }
 
         // Toggle output visibility
@@ -734,62 +1054,6 @@ Click Me`,
             document.body.classList.toggle('no-scroll');
         }
 
-        // Handle image upload
-        function handleImageUpload() {
-            const file = imageUpload.files[0];
-            if (!file) {
-                alert('Please select an image file first.');
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const currentQuestionId = parseInt(currentQuestionTitle.textContent.split('.')[0]);
-                uploadedImages[currentQuestionId] = e.target.result;
-                
-                // Save to localStorage
-                localStorage.setItem('uploadedImages', JSON.stringify(uploadedImages));
-                
-                showUploadedImage(currentQuestionId);
-                removeImageBtn.style.display = 'inline-block';
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Remove image
-        function removeImage() {
-            const currentQuestionId = parseInt(currentQuestionTitle.textContent.split('.')[0]);
-            
-            if (uploadedImages[currentQuestionId]) {
-                delete uploadedImages[currentQuestionId];
-                
-                // Update localStorage
-                localStorage.setItem('uploadedImages', JSON.stringify(uploadedImages));
-                
-                imagePreview.innerHTML = '';
-                removeImageBtn.style.display = 'none';
-                imageUpload.value = ''; // Clear file input
-            }
-        }
-
-        // Show uploaded image
-        function showUploadedImage(questionId) {
-            if (uploadedImages[questionId]) {
-                imagePreview.innerHTML = `
-                    <img src="${uploadedImages[questionId]}" alt="Uploaded Code" class="uploaded-image">
-                `;
-            }
-        }
-
-        // Load stored images
-        function loadStoredImages() {
-            for (const questionId in uploadedImages) {
-                if (uploadedImages.hasOwnProperty(questionId)) {
-                    // Images are already loaded in the uploadedImages object
-                }
-            }
-        }
-
         // Download as PDF
         async function downloadAsPdf() {
             const pdf = new jsPDF();
@@ -800,20 +1064,20 @@ Click Me`,
             // Create a printable version of the content
             let htmlContent = `
                 <h1>${currentQuestionTitle.textContent}</h1>
-                <pre style="background: #f8f9fa; padding: 20px; border-radius: 5px; border: 1px solid #ddd; font-family: monospace; white-space: pre-wrap;">${codeDisplay.textContent}</pre>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 5px; border: 1px solid #ddd; font-family: monospace; white-space: pre-wrap;">${codeDisplay.textContent}</div>
             `;
             
-            // Add image if exists for this question
-            if (uploadedImages[currentQuestionId]) {
+            // Add image if exists in the code (for image-based questions)
+            if (codeDisplay.querySelector('img')) {
                 htmlContent += `
                     <h2>Code Image:</h2>
-                    <img src="${uploadedImages[currentQuestionId]}" style="max-width: 100%; max-height: 300px; display: block; margin: 0 auto;">
+                    ${codeDisplay.querySelector('img').outerHTML}
                 `;
             }
             
             htmlContent += `
                 <h2>Output:</h2>
-                <pre style="background: #2c3e50; color: white; padding: 15px; border-radius: 5px; font-family: monospace; white-space: pre-wrap;">${outputDisplay.textContent}</pre>
+                <div style="background: #2c3e50; color: white; padding: 15px; border-radius: 5px; font-family: monospace; white-space: pre-wrap;">${outputDisplay.textContent}</div>
             `;
             
             content.innerHTML = htmlContent;
@@ -845,6 +1109,61 @@ Click Me`,
             } finally {
                 document.body.removeChild(content);
             }
+        }
+
+        // Download all questions as PDF
+        async function downloadAllQuestionsAsPdf() {
+            const pdf = new jsPDF();
+            let position = 20; // Initial position
+            
+            // Add title page
+            pdf.setFontSize(24);
+            pdf.text("JavaScript Code Playground - All Questions", 105, position, { align: 'center' });
+            position += 30;
+            
+            pdf.setFontSize(16);
+            pdf.text("Table of Contents", 105, position, { align: 'center' });
+            position += 20;
+            
+            pdf.setFontSize(12);
+            questions.forEach(question => {
+                pdf.text(`${question.id}. ${question.title}`, 20, position);
+                position += 10;
+                
+                // Add new page if needed
+                if (position > 280) {
+                    pdf.addPage();
+                    position = 20;
+                }
+            });
+            
+            // Add each question
+            for (const question of questions) {
+                pdf.addPage();
+                position = 20;
+                
+                pdf.setFontSize(18);
+                pdf.text(`${question.id}. ${question.title}`, 20, position);
+                position += 15;
+                
+                pdf.setFontSize(12);
+                pdf.text("Code:", 20, position);
+                position += 10;
+                
+                // Split code into multiple lines if needed
+                const codeLines = pdf.splitTextToSize(question.code.replace(/<img[^>]*>/g, '[IMAGE]'), 170);
+                pdf.text(codeLines, 25, position);
+                position += (codeLines.length * 7) + 10;
+                
+                pdf.text("Output:", 20, position);
+                position += 10;
+                
+                const outputLines = pdf.splitTextToSize(question.output, 170);
+                pdf.text(outputLines, 25, position);
+                position += (outputLines.length * 7) + 10;
+            }
+            
+            pdf.save("JavaScript_Code_Playground_All_Questions.pdf");
         }
 
         // Initialize the app when DOM is loaded

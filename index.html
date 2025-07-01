@@ -884,68 +884,102 @@ let updated = students.map(s => ({ ...s, isAdult: s.age >= 18 }));
 console.log(updated);`,
     output: `[{"name":"John","age":17,"isAdult":false},{"name":"Jane","age":19,"isAdult":true},{"name":"Jack","age":18,"isAdult":true}]`
   },
-//   {
-//     id: 32,
-//     title: "Find index of book by title",
-//     code: `
-// let books = [
-//   { title: 'Book A', author: 'Author 1' },
-//   { title: 'Book B', author: 'Author 2' },
-//   { title: 'Book C', author: 'Author 3' }
-// ];
-// let title = 'Book B';
-// let index = books.findIndex(book => book.title === title);
-// console.log(index);`,
-//     output: `1`
-//   },
-//   {
-//     id: 33,
-//     title: "Print employee names with salary > input",
-//     code: `
-// let employees = [
-//   { name: 'Alice', salary: 50000 },
-//   { name: 'Bob', salary: 60000 },
-//   { name: 'Charlie', salary: 40000 }
-// ];
-// let amount = 45000;
-// let names = employees
-//   .filter(e => e.salary > amount)
-//   .sort((a, b) => a.salary - b.salary)
-//   .map(e => e.name);
-// console.log(names);`,
-//     output: `["Alice", "Bob"]`
-//   },
-//   {
-//     id: 34,
-//     title: "Sort movies by release date",
-//     code: `
-// let movies = [
-//   { movieName: 'Movie A', movieHero: 'Hero A', movieGenre: 'Action', releaseDate: '2020-01-15' },
-//   { movieName: 'Movie B', movieHero: 'Hero B', movieGenre: 'Drama', releaseDate: '2019-06-10' },
-//   { movieName: 'Movie C', movieHero: 'Hero C', movieGenre: 'Comedy', releaseDate: '2021-12-25' },
-//   { movieName: 'Movie D', movieHero: 'Hero D', movieGenre: 'Horror', releaseDate: '2018-04-05' }
-// ];
-// movies.sort((a, b) => new Date(a.releaseDate) - new Date(b.releaseDate));
-// console.log(movies);`,
-//     output: `Sorted movie objects based on releaseDate`
-//   },
-//   {
-//     id: 35,
-//     title: "Return object with selected keys",
-//     code: `
-// function pick(obj, keys){
-//   return keys.reduce((res, key) => {
-//     if(obj[key] !== undefined) res[key] = obj[key];
-//     return res;
-//   }, {});
-// }
-// let obj = { a: 1, b: 2, c: 3, d: 4 };
-// let keys = ['b', 'c'];
-// console.log(pick(obj, keys));`,
-//     output: `{ b: 2, c: 3 }`
-//   }
+  {
+    id: 32,
+    title: "Find index of book by title",
+     code: `<img src="32.png" alt="Code for coloring h1 tags" style="max-width: 100%;">`,
+    output: `1`
+  },
+  {
+    id: 33,
+    title: "Print employee names with salary > input",
+    code: `const employees = [ 
+{ name: 'Alice', salary: 50000 }, 
+{ name: 'Bob', salary: 60000 }, 
+{ name: 'Charlie', salary: 40000 }, 
+];
+let userinput=45000
+let sal = employees.filter(sals=>sals.salary>=45000)
+let ass= sal.sort((a,b)=>a.salary - b.salary)
+console.log(ass)`,
+    output: `[ { name: 'Alice', salary: 50000 }, { name: 'Bob', salary: 60000 } ]`
+  },
+  {
+    id: 34,
+    title: "Sort movies by release date",
+    code: `
+let movies = [
+  { movieName: 'Movie A', movieHero: 'Hero A', movieGenre: 'Action', releaseDate: '2020-01-15' },
+  { movieName: 'Movie B', movieHero: 'Hero B', movieGenre: 'Drama', releaseDate: '2019-06-10' },
+  { movieName: 'Movie C', movieHero: 'Hero C', movieGenre: 'Comedy', releaseDate: '2021-12-25' },
+  { movieName: 'Movie D', movieHero: 'Hero D', movieGenre: 'Horror', releaseDate: '2018-04-05' }
+];
+movies.sort((a, b) => new Date(a.releaseDate) - new Date(b.releaseDate));
+console.log(movies);
+
+or 
+
+const movies = [ 
+{ movieName: 'Movie A', movieHero: 'Hero A', movieGenre: 'Action', releaseDate: '2020-01-15' }, 
+{ movieName: 'Movie B', movieHero: 'Hero B', movieGenre: 'Drama', releaseDate: '2019-06-10' }, 
+{ movieName: 'Movie C', movieHero: 'Hero C', movieGenre: 'Comedy', releaseDate: '2021-12-25' 
+}, 
+{ movieName: 'Movie D', movieHero: 'Hero D', movieGenre: 'Horror', releaseDate: '2018-04-05'},]; 
+
+function sortedMovies(arr){
+   return arr.sort((a, b) => new Date(a.releaseDate) - new Date(b.releaseDate));
+}
+let ascending= sortedMovies(movies)
+console.log(ascending)`,
+    output: `[
+  {
+    movieName: 'Movie D',
+    movieHero: 'Hero D',
+    movieGenre: 'Horror',
+    releaseDate: '2018-04-05'
+  },
+  {
+    movieName: 'Movie B',
+    movieHero: 'Hero B',
+    movieGenre: 'Drama',
+    releaseDate: '2019-06-10'
+  },
+  {
+    movieName: 'Movie A',
+    movieHero: 'Hero A',
+    movieGenre: 'Action',
+    releaseDate: '2020-01-15'
+  },
+  {
+    movieName: 'Movie C',
+    movieHero: 'Hero C',
+    movieGenre: 'Comedy',
+    releaseDate: '2021-12-25'
+  }
 ]
 
+=== Code Execution Successful ===`
+  },
+  {
+    id: 35,
+  title: "Return object with selected keys",
+    code: `
+function pickProperties(o,k){
+    let res ={};
+    k.forEach(k=>{
+        if(k in o){
+            res[k]=o[k];
+        }
+    });
+    return res;
+}
+const o = { a: 1, b: 2, c: 3, d: 4 }; 
+const k = ['b', 'c'];
+const output=pickProperties(o,k)
+console.log(output)`,
+    output: `{ b: 2, c: 3 }`
+  }
+]
 const questionsList = document.getElementById('questionsList');
         const questionsListMobile = document.getElementById('questionsListMobile');
         const currentQuestionTitle = document.getElementById('currentQuestionTitle');

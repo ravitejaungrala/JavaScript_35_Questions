@@ -644,7 +644,25 @@ console.log(secondLargest);`,
   {
     id: 15,
     title: "Check strong number or not",
-   code: `<img src="15.png" alt="Code for coloring h1 tags" style="max-width: 100%;">`,
+   code: `let num=145
+let sum=0,fact;
+let temp=num;
+while(num!=0){
+    let rem=num%10
+    fact=1;
+    for(let i=1;i<=rem;i++){
+        fact=fact*i;
+
+    }
+    sum+=fact
+  
+    num=parseInt(num/10);
+   
+
+}
+if(sum==temp){
+    console.log(`strong`)
+}`,
     output: `Strong Number`
   },
   {
